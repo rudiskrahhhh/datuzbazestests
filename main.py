@@ -1,9 +1,19 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
+from dati import pievienot_skolenu
 
 app = Flask(__name__)
 
-@app.route("/")
+@app.route("/", methods=["POST, GET"])
 def index():
+    if request.method == "POST":
+        vards = request.form['name']
+        uzvards = request.form['lastname']
+        pievienot_skolenu(vards, uzvards)
+        dati = vards+" "+uzvards
+
+        return render_template("index.html", aizsutitais = dati)
+    
+    # get metode
     return render_template("index.html")
 
 @app.route("/pievienot")
